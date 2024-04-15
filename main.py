@@ -1,17 +1,15 @@
 """The main loop."""
 
-from PDFDownloader.constants import DOWNLOADED_FILE
-from PDFDownloader.download import download_all_pdfs
-from PDFDownloader.utils import initialize_repo
+import tkinter as tk
+
+from PDFDownloader.GUI.interface import PDFDownloaderGUI
 
 
 def main() -> None:
-    """Run the main loop."""
-    df = initialize_repo()
-
-    download_all_pdfs(df)
-
-    df.to_excel(DOWNLOADED_FILE, index=True)
+    """Run the GUI."""
+    root = tk.Tk()
+    PDFDownloaderGUI(root)
+    root.mainloop()
 
 
 if __name__ == "__main__":

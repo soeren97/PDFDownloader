@@ -1,6 +1,7 @@
 """Functions to download pdfs."""
 
 import os.path as path
+import time
 import urllib.error
 import urllib.request
 
@@ -10,7 +11,7 @@ from PDFDownloader.constants import DATA_FILE, PDF_FOLDER, URL_INDEX_1, URL_INDE
 from PDFDownloader.read_excel import read_excel_rows
 
 
-def download_all_pdfs(df: pd.DataFrame) -> pd.DataFrame:
+def download_all_pdfs(df: pd.DataFrame, delay: int) -> pd.DataFrame:
     """Download all pdfs.
 
     Args:
@@ -37,6 +38,7 @@ def download_all_pdfs(df: pd.DataFrame) -> pd.DataFrame:
 
         # File is downloaded.
         df.loc[br_number] = True
+        time.sleep(delay)
         break
     return df
 
