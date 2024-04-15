@@ -25,22 +25,34 @@ def download_all_pdfs(df: pd.DataFrame) -> pd.DataFrame:
             if df.loc[br_number]:
                 continue
 
-        pdf_url = row[URL_INDEX_1]
+        pdf_url1 = row[URL_INDEX_1]
+        pdf_url2 = row[URL_INDEX_2]
+
         save_path = path.join(PDF_FOLDER, f"{br_number}.pdf")
 
         try:
-            urllib.request.urlretrieve(pdf_url, save_path)
+            download_pdf(pdf_url1, pdf_url2, save_path)
         except urllib.error.URLError:
-            try:
-                pdf_url = row[URL_INDEX_2]
-                urllib.request.urlretrieve(pdf_url, save_path)
-            except urllib.error.URLError:
-                continue
+            continue
 
         # File is downloaded.
         df.loc[br_number] = True
         break
     return df
+
+
+def download_pdf(pdf_url1: str, pdf_url2: str, save_path: str) -> None:
+    """Download a pdf using one of two urls.
+
+    Args:
+        pdf_url1 (str): First url.
+        pdf_url2 (str): Second url.
+        save_path (str): Save location of pdf.
+    """
+    try:
+        urllib.request.urlretrieve(pdf_url1, save_path)
+    except urllib.error.URLError:
+        urllib.request.urlretrieve(pdf_url2, save_path)
 
 
 if __name__ == "__main__":
