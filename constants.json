@@ -1,6 +1,6 @@
 {
-    "PDF_folder": "C:/Users/KOM/Documents/Uge 11/PDFDownloader/Data/Reports",
-    "Data_file": "C:/Users/KOM/Documents/Uge 11/PDFDownloader/Data/GRI_2017_2020.xlsx",
+    "PDF_folder": "/Data/Reports",
+    "Data_file": "/Data/GRI_2017_2020.xlsx",
     "Downloaded_file": "Data/downloaded.xlsx",
     "URL_index1": 37,
     "URL_index2": 38,
