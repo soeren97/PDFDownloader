@@ -13,5 +13,7 @@ DOWNLOADED_FILE = path.join(DATA_FOLDER, "downloaded.xlsx")
 URL_INDEX_1 = 37
 URL_INDEX_2 = 38
 
+TIMEOUT = 5
+
 if __name__ == "__main__":
     pass
