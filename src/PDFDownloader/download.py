@@ -24,6 +24,7 @@ def download_all_pdfs(df: pd.DataFrame, delay: int) -> pd.DataFrame:
         pd.DataFrame: Overview of downloaded pdfs.
     """
     for row in read_excel_rows(DATA_FILE, "0"):
+        start_time = time.time()
         br_number = row[0]
         if br_number in df.index:
             if df.loc[br_number]["Downloaded"]:
@@ -42,7 +43,9 @@ def download_all_pdfs(df: pd.DataFrame, delay: int) -> pd.DataFrame:
 
         # File is downloaded.
         df.loc[br_number] = [True, None, None]
-        time.sleep(delay)
+        time_spent = time.time() - start_time
+        if time_spent < delay:
+            time.sleep(delay - time_spent)
         break
     return df
 
