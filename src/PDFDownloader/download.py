@@ -10,11 +10,17 @@ from urllib.error import URLError
 
 import pandas as pd
 
-from PDFDownloader.constants import DATA_FILE, PDF_FOLDER, URL_INDEX_1, URL_INDEX_2
 from PDFDownloader.read_excel import read_excel_rows
 
 
-def download_all_pdfs(df: pd.DataFrame, delay: int) -> pd.DataFrame:
+def download_all_pdfs(
+    df: pd.DataFrame,
+    delay: int,
+    data_file: str,
+    url_index1: int,
+    url_index2: int,
+    pdf_folder: str,
+) -> pd.DataFrame:
     """Download all pdfs.
 
     Args:
@@ -23,17 +29,17 @@ def download_all_pdfs(df: pd.DataFrame, delay: int) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Overview of downloaded pdfs.
     """
-    for row in read_excel_rows(DATA_FILE, "0"):
+    for row in read_excel_rows(data_file, "0"):
         start_time = time.time()
         br_number = row[0]
         if br_number in df.index:
             if df.loc[br_number]["Downloaded"]:
                 continue
 
-        pdf_url1 = row[URL_INDEX_1]
-        pdf_url2 = row[URL_INDEX_2]
+        pdf_url1 = row[url_index1]
+        pdf_url2 = row[url_index2]
 
-        save_path = path.join(PDF_FOLDER, f"{br_number}.pdf")
+        save_path = path.join(pdf_folder, f"{br_number}.pdf")
 
         try:
             error1 = download_pdf(pdf_url1, pdf_url2, save_path)
