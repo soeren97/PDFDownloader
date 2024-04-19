@@ -1,8 +1,8 @@
 {
     "PDF_folder": "/Data/Reports",
-    "Data_file": "/Data/GRI_2017_2020.xlsx",
+    "Data_file": "Data/GRI_2017_2020.xlsx",
     "Downloaded_file": "Data/downloaded.xlsx",
-    "URL_index1": 37,
-    "URL_index2": 38,
-    "Timeout": 5
+    "URL_index1": "37",
+    "URL_index2": "38",
+    "Timeout": "5"
 }
