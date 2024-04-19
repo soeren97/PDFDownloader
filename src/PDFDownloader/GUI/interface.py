@@ -8,6 +8,7 @@ from typing import Optional
 
 from PDFDownloader.download import download_all_pdfs
 from PDFDownloader.GUI.settings import SettingsWindow
+from PDFDownloader.GUI.WidgetBuilder import WidgetBuilder
 from PDFDownloader.utils import ConstantsHandler, initialize_repo
 
 
@@ -38,41 +39,78 @@ class PDFDownloaderGUI:
         self.master = master
         master.title("Hent pdf'er")
 
-        self.speed_label = tk.Label(master, text="Tid mellem downloads:")
-        self.speed_label.grid(row=0, column=0, padx=10, pady=5)
+        self.widget_builder = WidgetBuilder(self.master)
 
-        default_speed = "5"
+        self.create_widgets()
 
-        self.speed_entry = tk.Entry(master)
-        self.speed_entry.insert(0, default_speed)
-        self.speed_entry.grid(row=0, column=1, padx=10, pady=5)
-
-        self.submit_button = tk.Button(master, text="Hent pdf'er", command=self.submit)
-        self.submit_button.grid(
-            row=1, column=0, columnspan=2, padx=10, pady=5, sticky="we"
+    def create_widgets(self) -> None:
+        """Create widgets on the main page."""
+        self.speed_label = self.widget_builder.create_label("Tid mellem downloads:")
+        self.speed_entry = self.widget_builder.create_entry("5")
+        self.submit_button = self.widget_builder.create_button(
+            "Hent pdf'er", self.submit
         )
-
-        self.setup_button = tk.Button(master, text="Indstillinger", command=self.setup)
-        self.setup_button.grid(
-            row=2, column=0, columnspan=2, padx=10, pady=5, sticky="we"
+        self.setup_button = self.widget_builder.create_button(
+            "Indstillinger", self.setup
         )
-
-        self.cancel_button = tk.Button(master, text="Afslut", command=self.cancel)
-        self.cancel_button.grid(
-            row=3, column=0, columnspan=2, padx=10, pady=5, sticky="we"
-        )
-
-        self.progress_bar = ttk.Progressbar(
-            master, orient="horizontal", mode="determinate"
-        )
-        self.progress_bar.grid(
-            row=4, column=0, columnspan=2, padx=10, pady=5, sticky="we"
-        )
-
+        self.cancel_button = self.widget_builder.create_button("Afslut", self.cancel)
+        self.progress_bar = self.widget_builder.create_progress_bar()
         self.progress_text = tk.StringVar()
-        self.progress_label = tk.Label(master, textvariable=self.progress_text)
-        self.progress_label.grid(
-            row=5, column=0, columnspan=2, padx=10, pady=5, sticky="we"
+        self.progress_label = self.widget_builder.create_progress_label(
+            text_variable=self.progress_text
+        )
+
+        # Place widgets on the window
+        self.widget_builder.place_widget(
+            self.speed_label, row=0, column=0, padx=10, pady=5
+        )
+        self.widget_builder.place_widget(
+            self.speed_entry, row=0, column=1, padx=10, pady=5
+        )
+        self.widget_builder.place_widget(
+            self.submit_button,
+            row=1,
+            column=0,
+            columnspan=2,
+            padx=10,
+            pady=5,
+            sticky="we",
+        )
+        self.widget_builder.place_widget(
+            self.setup_button,
+            row=2,
+            column=0,
+            columnspan=2,
+            padx=10,
+            pady=5,
+            sticky="we",
+        )
+        self.widget_builder.place_widget(
+            self.cancel_button,
+            row=3,
+            column=0,
+            columnspan=2,
+            padx=10,
+            pady=5,
+            sticky="we",
+        )
+        self.widget_builder.place_widget(
+            self.progress_bar,
+            row=4,
+            column=0,
+            columnspan=2,
+            padx=10,
+            pady=5,
+            sticky="we",
+        )
+        self.widget_builder.place_widget(
+            self.progress_label,
+            row=5,
+            column=0,
+            columnspan=2,
+            padx=10,
+            pady=5,
+            sticky="we",
         )
 
     def set_constants(self) -> None:

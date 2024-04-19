@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import Tk, filedialog
 from typing import Callable
 
+from PDFDownloader.GUI.WidgetBuilder import WidgetBuilder
 from PDFDownloader.utils import ConstantsHandler
 
 
@@ -29,81 +30,129 @@ class SettingsWindow:
         self.setup_window.title("Indstillinger")
         self.setup_window.grab_set()
 
-        self.excel_label = tk.Label(self.setup_window, text="Oversigts excel fil:")
-        self.excel_label.grid(row=0, column=0, padx=10, pady=5)
+        self.widget_builder = WidgetBuilder(self.setup_window)
 
-        self.excel_entry = tk.Entry(self.setup_window)
-        self.excel_entry.grid(row=0, column=1, padx=10, pady=5)
-        self.excel_entry.insert(0, self.constant_handler.constants["Data_file"])
+        self.create_widgets()
 
-        self.excel_button = tk.Button(
-            self.setup_window, text="Find", command=self.browse_excel
+    def create_widgets(self) -> None:
+        """Create widgets."""
+        self.excel_label = self.widget_builder.create_label("Oversigts excel fil:")
+        self.excel_entry = self.widget_builder.create_entry(
+            self.constant_handler.constants["Data_file"]
         )
-        self.excel_button.grid(row=0, column=2, padx=5, pady=5)
+        self.excel_button = self.widget_builder.create_button("Find", self.browse_excel)
 
-        self.nsa_label = tk.Label(self.setup_window, text="PDF gemme lokation:")
-        self.nsa_label.grid(row=1, column=0, padx=10, pady=5)
-
-        self.nsa_entry = tk.Entry(self.setup_window)
-        self.nsa_entry.grid(row=1, column=1, padx=10, pady=5)
-        self.nsa_entry.insert(0, self.constant_handler.constants["PDF_folder"])
-
-        self.nsa_button = tk.Button(
-            self.setup_window, text="Find", command=self.browse_nsa
+        self.nsa_label = self.widget_builder.create_label("PDF gemme lokation:")
+        self.nsa_entry = self.widget_builder.create_entry(
+            self.constant_handler.constants["PDF_folder"]
         )
-        self.nsa_button.grid(row=1, column=2, padx=5, pady=5)
+        self.nsa_button = self.widget_builder.create_button("Find", self.browse_nsa)
 
-        self.downloaded_label = tk.Label(
-            self.setup_window, text="Downloadet checklist:"
+        self.downloaded_label = self.widget_builder.create_label(
+            "Downloadet checklist:"
         )
-        self.downloaded_label.grid(row=2, column=0, padx=10, pady=5)
-
-        self.downloaded_entry = tk.Entry(self.setup_window)
-        self.downloaded_entry.grid(row=2, column=1, padx=10, pady=5)
-        self.downloaded_entry.insert(
-            0, self.constant_handler.constants["Downloaded_file"]
+        self.downloaded_entry = self.widget_builder.create_entry(
+            self.constant_handler.constants["Downloaded_file"]
+        )
+        self.downloaded_button = self.widget_builder.create_button(
+            "Find", self.browse_downloaded
         )
 
-        self.downloaded_button = tk.Button(
-            self.setup_window, text="Find", command=self.browse_downloaded
-        )
-        self.downloaded_button.grid(row=2, column=2, padx=5, pady=5)
-
-        self.index1_label = tk.Label(self.setup_window, text="PDF URL kolonne nummer:")
-        self.index1_label.grid(row=3, column=0, padx=10, pady=5)
-
-        self.index1_entry = tk.Entry(self.setup_window)
-        self.index1_entry.grid(row=3, column=1, padx=10, pady=5)
-        self.index1_entry.insert(0, self.constant_handler.constants["URL_index1"])
-
-        self.index2_label = tk.Label(
-            self.setup_window, text="Report html kolonne nummer:"
-        )
-        self.index2_label.grid(row=4, column=0, padx=10, pady=5)
-
-        self.index2_entry = tk.Entry(self.setup_window)
-        self.index2_entry.grid(row=4, column=1, padx=10, pady=5)
-        self.index2_entry.insert(0, self.constant_handler.constants["URL_index2"])
-
-        self.timeout_label = tk.Label(self.setup_window, text="Timeout (s):")
-        self.timeout_label.grid(row=5, column=0, padx=10, pady=5)
-
-        self.timeout_entry = tk.Entry(self.setup_window)
-        self.timeout_entry.grid(row=5, column=1, padx=10, pady=5)
-        self.timeout_entry.insert(0, self.constant_handler.constants["Timeout"])
-
-        self.save_button = tk.Button(
-            self.setup_window, text="Gem ændringer", command=self.save_changes
-        )
-        self.save_button.grid(
-            row=6, column=0, columnspan=3, padx=10, pady=5, sticky="we"
+        self.index1_label = self.widget_builder.create_label("PDF URL kolonne nummer:")
+        self.index1_entry = self.widget_builder.create_entry(
+            str(self.constant_handler.constants["URL_index1"])
         )
 
-        self.back_button = tk.Button(
-            self.setup_window, text="Tilbage", command=self.close
+        self.index2_label = self.widget_builder.create_label(
+            "Report html kolonne nummer:"
         )
-        self.back_button.grid(
-            row=7, column=0, columnspan=3, padx=10, pady=5, sticky="we"
+        self.index2_entry = self.widget_builder.create_entry(
+            str(self.constant_handler.constants["URL_index2"])
+        )
+
+        self.timeout_label = self.widget_builder.create_label("Timeout (s):")
+        self.timeout_entry = self.widget_builder.create_entry(
+            str(self.constant_handler.constants["Timeout"])
+        )
+
+        self.save_button = self.widget_builder.create_button(
+            "Gem ændringer", self.save_changes
+        )
+        self.back_button = self.widget_builder.create_button("Tilbage", self.close)
+
+        # Place widgets on the window
+        self.place_widgets()
+
+    def place_widgets(self) -> None:
+        """Place widgets on the window."""
+        self.widget_builder.place_widget(
+            self.excel_label, row=0, column=0, padx=10, pady=5
+        )
+        self.widget_builder.place_widget(
+            self.excel_entry, row=0, column=1, padx=10, pady=5
+        )
+        self.widget_builder.place_widget(
+            self.excel_button, row=0, column=2, padx=5, pady=5
+        )
+
+        self.widget_builder.place_widget(
+            self.nsa_label, row=1, column=0, padx=10, pady=5
+        )
+        self.widget_builder.place_widget(
+            self.nsa_entry, row=1, column=1, padx=10, pady=5
+        )
+        self.widget_builder.place_widget(
+            self.nsa_button, row=1, column=2, padx=5, pady=5
+        )
+
+        self.widget_builder.place_widget(
+            self.downloaded_label, row=2, column=0, padx=10, pady=5
+        )
+        self.widget_builder.place_widget(
+            self.downloaded_entry, row=2, column=1, padx=10, pady=5
+        )
+        self.widget_builder.place_widget(
+            self.downloaded_button, row=2, column=2, padx=5, pady=5
+        )
+
+        self.widget_builder.place_widget(
+            self.index1_label, row=3, column=0, padx=10, pady=5
+        )
+        self.widget_builder.place_widget(
+            self.index1_entry, row=3, column=1, padx=10, pady=5
+        )
+
+        self.widget_builder.place_widget(
+            self.index2_label, row=4, column=0, padx=10, pady=5
+        )
+        self.widget_builder.place_widget(
+            self.index2_entry, row=4, column=1, padx=10, pady=5
+        )
+
+        self.widget_builder.place_widget(
+            self.timeout_label, row=5, column=0, padx=10, pady=5
+        )
+        self.widget_builder.place_widget(
+            self.timeout_entry, row=5, column=1, padx=10, pady=5
+        )
+
+        self.widget_builder.place_widget(
+            self.save_button,
+            row=6,
+            column=0,
+            columnspan=3,
+            padx=10,
+            pady=5,
+            sticky="we",
+        )
+        self.widget_builder.place_widget(
+            self.back_button,
+            row=7,
+            column=0,
+            columnspan=3,
+            padx=10,
+            pady=5,
+            sticky="we",
         )
 
     def browse_excel(self) -> None:
