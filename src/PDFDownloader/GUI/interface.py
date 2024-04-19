@@ -41,7 +41,7 @@ class PDFDownloaderGUI:
         self.speed_label = tk.Label(master, text="Tid mellem downloads:")
         self.speed_label.grid(row=0, column=0, padx=10, pady=5)
 
-        default_speed = "10"
+        default_speed = "5"
 
         self.speed_entry = tk.Entry(master)
         self.speed_entry.insert(0, default_speed)
